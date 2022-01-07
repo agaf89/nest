@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { AppModule } from '../src/app.module';
 import { CreateReviewDto } from '../src/review/dto/create-review.dto';
 import { Types, disconnect } from 'mongoose';
 import { REVIEW_NOT_FOUND } from '../src/review/review.constants';
@@ -13,7 +13,7 @@ const testDto: CreateReviewDto = {
 	title: 'Заголовок',
 	description: 'Описание тестовое',
 	rating: 5,
-	productId
+	productId,
 };
 
 describe('AppController (e2e)', () => {
@@ -37,6 +37,17 @@ describe('AppController (e2e)', () => {
 			.then(({ body }: request.Response) => {
 				createdId = body._id;
 				expect(createdId).toBeDefined();
+				done();
+			});
+	});
+
+	it('/review/create (POST) - fail', async (done) => {
+		return request(app.getHttpServer())
+			.post('/review/create')
+			.send({ ...testDto, rating: 0 })
+			.expect(400)
+			.then(({ body }: request.Response) => {
+				console.log(body);
 				done();
 			});
 	});
@@ -72,7 +83,7 @@ describe('AppController (e2e)', () => {
 			.delete('/review/' + new Types.ObjectId().toHexString())
 			.expect(404, {
 				statusCode: 404,
-				message: REVIEW_NOT_FOUND
+				message: REVIEW_NOT_FOUND,
 			});
 	});
 
