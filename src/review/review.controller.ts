@@ -9,18 +9,17 @@ import {
 	Post,
 	UseGuards,
 	UsePipes,
-	ValidationPipe,
+	ValidationPipe
 } from '@nestjs/common';
+import { IdValidationPipe } from 'src/pipes/ad-validation.pipe';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { REVIEW_NOT_FOUND } from './review.constants';
 import { ReviewService } from './review.service';
-import { JwtAuthGuard } from '../auth/guards/jwt.guard';
-import { UserEmail } from '../decorators/user-email.decorator';
-import { IdValidationPipe } from '../pipes/id-validation.pipe';
 
 @Controller('review')
 export class ReviewController {
-	constructor(private readonly reviewService: ReviewService) {}
+	constructor(private readonly reviewService: ReviewService) { }
 
 	@UsePipes(new ValidationPipe())
 	@Post('create')
@@ -38,7 +37,7 @@ export class ReviewController {
 	}
 
 	@Get('byProduct/:productId')
-	async getByProduct(@Param('productId', IdValidationPipe) productId: string, @UserEmail() email: string) {
+	async getByProduct(@Param('productId', IdValidationPipe) productId: string) {
 		return this.reviewService.findByProductId(productId);
 	}
 }

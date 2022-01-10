@@ -21,7 +21,7 @@
 		"no-shadowed-variable": true,
 		"no-switch-case-fall-through": true,
 		"no-tautology-expression": true,
-		"no-unused-variable": false,
+		"no-unused-variable": true,
 		"no-var-keyword": true,
 		"static-this": true,
 		"switch-default": true,
@@ -59,7 +59,7 @@
 		"indent": [
 			true,
 			"tabs",
-			2
+			4
 		],
 		"linterOptions": {
 			"exclude": [

@@ -10,19 +10,19 @@ import {
 	Post,
 	UseGuards,
 	UsePipes,
-	ValidationPipe,
+	ValidationPipe
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { IdValidationPipe } from 'src/pipes/ad-validation.pipe';
+import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductDto } from './dto/find-product.dto';
+import { PRODUCT_NOT_FOUND_ERROR } from './product.constants';
 import { ProductModel } from './product.model';
-import { CreateProductDto } from './dto/create-ptoduct.dto';
 import { ProductService } from './product.service';
-import { NOT_FOUND_PRODUCT } from './product.constants';
-import { IdValidationPipe } from '../pipes/id-validation.pipe';
-import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 
 @Controller('product')
 export class ProductController {
-	constructor(private readonly productService: ProductService) {}
+	constructor(private readonly productService: ProductService) { }
 
 	@UseGuards(JwtAuthGuard)
 	@Post('create')
@@ -35,32 +35,28 @@ export class ProductController {
 	async get(@Param('id', IdValidationPipe) id: string) {
 		const product = await this.productService.findById(id);
 		if (!product) {
-			throw new NotFoundException(NOT_FOUND_PRODUCT);
+			throw new NotFoundException(PRODUCT_NOT_FOUND_ERROR);
 		}
-
 		return product;
 	}
 
 	@UseGuards(JwtAuthGuard)
 	@Delete(':id')
 	async delete(@Param('id', IdValidationPipe) id: string) {
-		const deleted = await this.productService.deleteById(id);
-		if (!deleted) {
-			throw new NotFoundException(NOT_FOUND_PRODUCT);
+		const deletedProduct = await this.productService.deleteById(id);
+		if (!deletedProduct) {
+			throw new NotFoundException(PRODUCT_NOT_FOUND_ERROR);
 		}
-
-		return deleted;
 	}
 
 	@UseGuards(JwtAuthGuard)
 	@Patch(':id')
-	async patch(@Param('id') id: string, @Body() dto: ProductModel) {
-		const updated = await this.productService.updateById(id, dto);
-		if (!updated) {
-			throw new NotFoundException(NOT_FOUND_PRODUCT);
+	async patch(@Param('id', IdValidationPipe) id: string, @Body() dto: ProductModel) {
+		const updatedProduct = await this.productService.updateById(id, dto);
+		if (!updatedProduct) {
+			throw new NotFoundException(PRODUCT_NOT_FOUND_ERROR);
 		}
-
-		return updated;
+		return updatedProduct;
 	}
 
 	@UsePipes(new ValidationPipe())
