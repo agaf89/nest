@@ -4,7 +4,6 @@ import { ProductModel } from './product.model';
 import { ModelType } from '@typegoose/typegoose/lib/types';
 import { CreateProductDto } from './dto/create-ptoduct.dto';
 import { FindProductDto } from './dto/find-product.dto';
-import { from } from 'rxjs';
 import { ReviewModel } from '../review/review.model';
 
 @Injectable()

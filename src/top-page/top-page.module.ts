@@ -11,11 +11,11 @@ import { TopPageService } from './top-page.service';
 			{
 				typegooseClass: TopPageModel,
 				schemaOptions: {
-					collection: 'TopPage'
-				}
-			}
-		])
+					collection: 'TopPage',
+				},
+			},
+		]),
 	],
-	providers: [TopPageService]
+	providers: [TopPageService],
 })
-export class TopPageModule { }
+export class TopPageModule {}
