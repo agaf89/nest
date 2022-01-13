@@ -9,7 +9,7 @@ import { MFile } from './mfile.class';
 export class FilesController {
 	constructor(private readonly filesService: FilesService) {}
 
-	@Post('upload')
+	@Post('uploads')
 	@HttpCode(200)
 	@UseGuards(JwtAuthGuard)
 	@UseInterceptors(FileInterceptor('files'))
